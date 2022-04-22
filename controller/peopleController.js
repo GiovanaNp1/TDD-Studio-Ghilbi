@@ -1,33 +1,39 @@
 const People = require('../Model/People')
-const people2 = require("../connecton")
-const { connect } = require("../routes")
 
 module.exports = {
     async show (request, response){
-        People.findById(request.params._id)
-        .then(idFound => {
-            if(!idFound){ return response.res.status(404).end(); }
-            return response.status(200).json(idFound);
-        })
-        .catch(err => next(err)); 
-        console.log('GET /people/:id People.show', request.params)
+        console.log('GET');
+        try {
+            const people = await People.find();
+            console.log('GET', people);
+            return response.status(200).json(people)
+        } catch (error) {
+            return response.status(500).json({
+                msg: 'Deu ruim',
+                error: error,
+             })    
+        }
     },
-    async show2 (request, response, next){
-        const result = []
-        console.log(request.params.id)
-        await people2.con.query(
-            `SELECT * FROM people WHERE idPeople = ${request.params.id}`, 
-            (err, rows) => {
-            if (err) { 
-                return response.status(404).send(err) 
-            }
-        
-            rows.forEach(row => {
-                result.push(row)
-                console.log(`Esse foi o resultado: \n ${row.gander} by ${row.name}, ${row.age}`)
-            });
-            console.log('GET /people:id People.show', request.params);
-            return response.json(result)
-        })
-     },
+    async create (request, response){
+        const { name, gander, age, eye_color, hair_color, mundo, familia, image } = request.body
+        try {
+            let pesesoa = await People.create({
+                name,
+                gander,
+                age,
+                eye_color,
+                hair_color,
+                mundo,
+                familia,
+                image
+            })
+            console.log(pesesoa)
+            return response.status(200).json(pesesoa)    
+        } catch (error) {
+            return response.status(500).json({
+                msg: 'Deu ruim',
+                error: error,
+             })        
+        }
+    },
 }

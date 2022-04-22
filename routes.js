@@ -1,11 +1,9 @@
 const { Router } = require('express')
 const routes = Router();
-const PeopleController = require('./controller/FilmeController')
+const PeopleController = require('./controller/peopleController')
 
- routes.put('/people', PeopleController.update);
- routes.get('/people/:_id', PeopleController.show);
- routes.patch('/people/update/:id', PeopleController.updatePatch)
- routes.delete('/people/:_id', PeopleController.destroy);
 
+ routes.get('/people', PeopleController.show);
+ routes.post('/people', PeopleController.create);
 
  module.exports = routes
