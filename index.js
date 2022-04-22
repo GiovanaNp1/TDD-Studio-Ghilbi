@@ -16,9 +16,7 @@ mongoose.connect(mongo, {
 
 app.use(express.json());
 app.use(routes)
-app.get('/banana', function(req, res) {
-    res.send('hello world');
-});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 module.exports = app
